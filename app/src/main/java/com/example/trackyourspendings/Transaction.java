@@ -1,31 +1,39 @@
 package com.example.trackyourspendings;
 
-import com.example.trackyourspendings.categories.CategoryType;
+import androidx.annotation.Nullable;
 
 import java.util.Date;
 
 public class Transaction {
+    private Integer id;
     private Item item;
     private Date trasactionDate;
+    private Date lastModificationDate;
     private String quantity;
     private int cost;
 
     private String description;
 
-    public Transaction(Item item, Date trasactionDate, String quantity, int cost, String description) {
+    public Transaction(@Nullable Integer id, Item item, Date trasactionDate, String quantity, int cost, String description, Date lastModificationDate) {
+        this.id= id;
         this.item = item;
         this.trasactionDate = trasactionDate;
+        this.lastModificationDate = lastModificationDate;
         this.quantity = quantity;
         this.cost = cost;
         this.description = description;
     }
 
-    public Transaction(Item item, Date trasactionDate, int cost, String description) {
-        this(item,trasactionDate,"",cost,description);
+    public Transaction(Item item, Date trasactionDate, String quantity, int cost, String description, Date lastModificationDate) {
+        this(null,item,trasactionDate, quantity,cost,description,lastModificationDate);
     }
 
-    public Transaction(Item item, Date trasactionDate, String quantity, int cost) {
-        this(item,trasactionDate,quantity,cost,"");
+    public Transaction(Item item, Date trasactionDate, int cost, String description, Date lastModificationDate) {
+        this(null,item,trasactionDate,"",cost,description, lastModificationDate);
+    }
+
+    public Transaction(Item item, Date trasactionDate, String quantity, int cost, Date lastModificationDate) {
+        this(null,item,trasactionDate,quantity,cost,"", lastModificationDate);
     }
 
     public Item getItem() {
@@ -46,5 +54,17 @@ public class Transaction {
 
     public String getDescription() {
         return description;
+    }
+
+    public Date getLastModificationDate() {
+        return lastModificationDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

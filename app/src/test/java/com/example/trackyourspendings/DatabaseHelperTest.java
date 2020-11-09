@@ -43,17 +43,17 @@ public class DatabaseHelperTest {
     public void insertData() {
         boolean success;
 
-        Item item = new Item(categoryManager.getCategory(Constants.kTypeFood), "Chinigura Rice");
-        Transaction transaction = new Transaction(item, Calendar.getInstance().getTime(), "2 Kg",180);
+        /*Item item = new Item(categoryManager.getCategory(Constants.kTypeFood), "Chinigura Rice");
+        Transaction transaction = new Transaction(item, Calendar.getInstance().getTime(), "2 Kg",180, lastModificationDate);
 
         success = dbhelper.insertTransaction(transaction);
         assertTrue(success);
 
         item = new Item(categoryManager.getCategory(Constants.kTypeMedical), "Dentist");
-        transaction = new Transaction(item, Calendar.getInstance().getTime(), 3000,"Scaled Teeth");
+        transaction = new Transaction(item, Calendar.getInstance().getTime(), 3000,"Scaled Teeth", lastModificationDate);
 
         success = dbhelper.insertTransaction(transaction);
-        assertTrue(success);
+        assertTrue(success);*/
 
         dbhelper.printAll();
     }

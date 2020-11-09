@@ -1,6 +1,7 @@
 package com.example.trackyourspendings.managers;
 
 import com.example.trackyourspendings.categories.CategoryType;
+import com.example.trackyourspendings.categories.Cosmatics;
 import com.example.trackyourspendings.categories.Food;
 import com.example.trackyourspendings.categories.Medical;
 
@@ -25,6 +26,7 @@ public class CategoryManager {
 
         categoryTypeMap.put(kTypeFood,new Food());
         categoryTypeMap.put(kTypeMedical,new Medical());
+        categoryTypeMap.put(kTypeCosmatics,new Cosmatics());
     }
 
     public CategoryType getCategory(int type){

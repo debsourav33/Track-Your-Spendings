@@ -11,38 +11,52 @@ import androidx.annotation.Nullable;
 
 import com.example.trackyourspendings.Item;
 import com.example.trackyourspendings.Transaction;
+import com.example.trackyourspendings.common.Constants;
+import com.example.trackyourspendings.managers.CategoryManager;
+import com.example.trackyourspendings.managers.ManagerHost;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final String TAG = DatabaseHelper.class.getSimpleName();
+    private static final String TAG = DatabaseHelper.class.getSimpleName();
 
     public static final String DB_NAME = "transactions.db";
 
-    public static final String COLUMN_DATE = "TRANSACTION_DATE";
-    public static final String COLUMN_ITEM_TYPE = "ITEM_TYPE";
+    public static final String COLUMN_ID = "ID";
+    public static final String COLUMN_TRANSACTION_DATE = "TRANSACTION_DATE";
+    public static final String COLUMN_ITEM_CATEGORY_TYPE = "ITEM_CATEOGY_TYPE";
     public static final String COLUMN_ITEM_NAME = "ITEM_NAME";
     public static final String COLUMN_QUANTITY = "QUANTITY";
     public static final String COLUMN_COST = "TRANSACTION_COST";
     public static final String COLUMN_DESCRIPTION = "DESCRIPTION";
     public static final String TABLE_MONTHLY_TRANSACTION = "MONTHLY_TRANSACTION";
+    public static final String COLUMN_LAST_MODIFY_DATE = "LAST_MODIFICATION_DATE";
+
+    ManagerHost mHost;
+    CategoryManager categoryManager;
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DB_NAME, null, 1);
+        categoryManager= CategoryManager.getInstance();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //"CREATE TABLE MONTHLY_TRANSACTION (DATE STRING, BROAD_CATEGORY_TYPE STRING, CATEGORY_TYPE STRING, ITEM_TYPE INTEGER, ITEM_NAME STRING, QUANTITY STRING, COST REAL, DESCRIPTION STRING)"
+        //"CREATE TABLE MONTHLY_TRANSACTION (ID INTEGER PRIMARY KEY, DATE STRING, BROAD_CATEGORY_TYPE STRING, CATEGORY_TYPE STRING, ITEM_TYPE INTEGER, ITEM_NAME STRING, QUANTITY STRING, COST REAL, DESCRIPTION STRING)"
         String createTransactionTable = "CREATE TABLE IF NOT EXISTS " + TABLE_MONTHLY_TRANSACTION + " (" +
-                COLUMN_DATE + " TEXT, " +
-                COLUMN_ITEM_TYPE + " INTEGER, " +
+                COLUMN_ID + " INTEGER PRIMARY KEY, " +
+                COLUMN_TRANSACTION_DATE + " INTEGER, " +
+                COLUMN_ITEM_CATEGORY_TYPE + " INTEGER, " +
                 COLUMN_ITEM_NAME + " TEXT, " +
                 COLUMN_QUANTITY + " TEXT, " +
                 COLUMN_COST + " INTEGER, " +
-                COLUMN_DESCRIPTION + " TEXT)";
+                COLUMN_DESCRIPTION + " TEXT, "+
+                COLUMN_LAST_MODIFY_DATE + " INTEGER)";
 
         db.execSQL(createTransactionTable);
     }
@@ -57,13 +71,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values= new ContentValues();
 
-        Date date= transaction.getTrasactionDate();
-        SimpleDateFormat dateFormat= new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-        String dateString= dateFormat.format(date);
-        values.put(COLUMN_DATE,dateString);
+        Date transDate= transaction.getTrasactionDate();
+        Date lastModifyDate= transaction.getLastModificationDate();
+        values.put(COLUMN_TRANSACTION_DATE,transDate.getTime());
+        values.put(COLUMN_LAST_MODIFY_DATE,lastModifyDate.getTime());
 
         Item item= transaction.getItem();
-        values.put(COLUMN_ITEM_TYPE,item.getItemTypeId());
+        values.put(COLUMN_ITEM_CATEGORY_TYPE,item.getItemTypeId());
         values.put(COLUMN_ITEM_NAME,item.getName());
 
         values.put(COLUMN_QUANTITY,transaction.getQuantity());
@@ -74,10 +88,81 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowId!=-1;
     }
 
-    public void printAll() {
+    private Cursor getAllTransactionCursor(){
         SQLiteDatabase db = getReadableDatabase();
         String selectAllQuery = "Select * from " + TABLE_MONTHLY_TRANSACTION;
-        Cursor cursor = db.rawQuery(selectAllQuery, null);
+        return db.rawQuery(selectAllQuery, null);
+    }
+
+    public List<Transaction> getAllTransactions(){
+        Cursor cursor= getAllTransactionCursor();
+
+        List<Transaction> list= cursorToTransactionList(cursor);
+        if(cursor!=null)  cursor.close();
+
+        return list;
+    }
+
+
+
+    public List<Transaction> getAllTransactionsForDuration(Date startDate, Date endDate){
+        SQLiteDatabase db = getReadableDatabase();
+
+        String selectAllQuery = "SELECT *"+
+                " FROM " + TABLE_MONTHLY_TRANSACTION +
+                " WHERE " +COLUMN_TRANSACTION_DATE+ " BETWEEN " + startDate.getTime() + " AND " + endDate.getTime();
+
+        Cursor cursor= db.rawQuery(selectAllQuery,null);
+
+        List<Transaction> list= cursorToTransactionList(cursor);
+        if(cursor!=null)  cursor.close();
+
+        return list;
+    }
+
+    private List<Transaction> cursorToTransactionList(Cursor cursor){
+        List<Transaction> list= new ArrayList<>();
+
+        if(cursor!=null && cursor.moveToFirst()) {
+            do {
+                Transaction transaction= cursorToTransaction(cursor);
+                list.add(transaction);
+            }
+            while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        return list;
+    }
+
+    private Transaction cursorToTransaction(Cursor cursor){
+        int id= cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
+        long transactionDateMillis= cursor.getLong(cursor.getColumnIndex(COLUMN_TRANSACTION_DATE));
+        long lastModifyDateMillis= cursor.getInt(cursor.getColumnIndex(COLUMN_LAST_MODIFY_DATE));
+        int itemCategoryType= cursor.getInt(cursor.getColumnIndex(COLUMN_ITEM_CATEGORY_TYPE));
+        String itemName= cursor.getString(cursor.getColumnIndex(COLUMN_ITEM_NAME));
+        String quantity= cursor.getString(cursor.getColumnIndex(COLUMN_QUANTITY));
+        int cost= cursor.getInt(cursor.getColumnIndex(COLUMN_COST));
+        String description= cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
+
+        Date transacntionDate, lastModifiedDate;
+        try {
+            transacntionDate = new Date(transactionDateMillis);
+            lastModifiedDate = new Date(lastModifyDateMillis);
+
+            Item item = new Item(categoryManager.getCategory(itemCategoryType), itemName);
+            return new Transaction(id, item, transacntionDate, quantity, cost, description, lastModifiedDate);
+        }
+        catch (Exception e){
+            Log.e(TAG, "cursorToTransaction: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+
+    public void printAll() {
+        Cursor cursor = getAllTransactionCursor();
 
         StringBuilder sb= new StringBuilder();
         int transactionCnt= 0;
@@ -98,4 +183,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Log.d(TAG, "\n\nAll Transactions: \n"+sb.toString());
     }
+
+
 }
