@@ -1,5 +1,7 @@
 package com.example.trackyourspendings.categories;
 
+import com.example.trackyourspendings.R;
+
 public abstract class CategoryType {
     private String broadCategoryName;
     private int id;
@@ -11,6 +13,10 @@ public abstract class CategoryType {
         this.id= id;
         this.name = name;
         this.iconResourceId = iconResourceId;
+    }
+
+    public CategoryType(String broadCategoryName, int id, String name) {
+        this(broadCategoryName,id,name,R.drawable.ic_launcher_background);
     }
 
     public String getName() {

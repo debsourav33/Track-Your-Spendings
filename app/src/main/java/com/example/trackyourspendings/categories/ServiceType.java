@@ -6,4 +6,8 @@ public abstract class ServiceType extends CategoryType {
     public ServiceType(int id, String name, int iconResourceId) {
         super("Service", id, name, iconResourceId);
     }
+
+    public ServiceType(int id, String name) {
+        super("Service", id, name);
+    }
 }

@@ -16,7 +16,6 @@ public class Constants {
     public static final int kTypeMedical = 201;
     public static final int kTypeTransport = 202;
     public static final int kTypeHairAndFace = 203;
-    public static final int kTypeHousemaid = 204;
     public static final int kTypeBills = 205;
     public static final int kTypeLaundry = 206;
 

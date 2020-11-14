@@ -18,6 +18,7 @@ import com.example.trackyourspendings.managers.ManagerHost;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -107,6 +108,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<Transaction> getAllTransactionsForDuration(Date startDate, Date endDate){
         SQLiteDatabase db = getReadableDatabase();
+
+        Calendar cal= Calendar.getInstance();
+        cal.setTime(startDate);
+        cal.add(Calendar.DATE,-1);  //between computes from startday+1 to endday
+        startDate= cal.getTime();
 
         String selectAllQuery = "SELECT *"+
                 " FROM " + TABLE_MONTHLY_TRANSACTION +

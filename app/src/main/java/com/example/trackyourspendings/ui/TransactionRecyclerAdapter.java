@@ -1,4 +1,4 @@
-package com.example.trackyourspendings.common;
+package com.example.trackyourspendings.ui;
 
 import android.view.LayoutInflater;
 import android.view.View;
