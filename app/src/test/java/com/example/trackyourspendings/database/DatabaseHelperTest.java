@@ -1,4 +1,4 @@
-package com.example.trackyourspendings;
+package com.example.trackyourspendings.database;
 
 import android.content.Context;
 

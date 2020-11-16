@@ -1,11 +1,20 @@
 package com.example.trackyourspendings.managers;
 
+import android.app.Activity;
+
 public class ManagerHost {
     private static ManagerHost managerHost;
-    private CategoryManager categoryManager;
+    public Activity currActivity;
+
+    public Activity getCurrActivity() {
+        return currActivity;
+    }
+
+    public void setCurrActivity(Activity currActivity) {
+        this.currActivity = currActivity;
+    }
 
     private ManagerHost(){
-        categoryManager= CategoryManager.getInstance();
     }
 
     public static ManagerHost getInstance(){
@@ -17,6 +26,6 @@ public class ManagerHost {
     }
 
     public CategoryManager getCategoryManager(){
-        return categoryManager;
+        return CategoryManager.getInstance();
     }
 }

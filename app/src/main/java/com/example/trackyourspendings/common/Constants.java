@@ -20,5 +20,4 @@ public class Constants {
     public static final int kTypeLaundry = 206;
 
     public static final int kTypeOtherServices = 299;
-
 }

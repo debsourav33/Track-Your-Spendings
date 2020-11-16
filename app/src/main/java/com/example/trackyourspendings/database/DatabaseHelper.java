@@ -49,7 +49,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //"CREATE TABLE MONTHLY_TRANSACTION (ID INTEGER PRIMARY KEY, DATE STRING, BROAD_CATEGORY_TYPE STRING, CATEGORY_TYPE STRING, ITEM_TYPE INTEGER, ITEM_NAME STRING, QUANTITY STRING, COST REAL, DESCRIPTION STRING)"
-        String createTransactionTable = "CREATE TABLE IF NOT EXISTS " + TABLE_MONTHLY_TRANSACTION + " (" +
+        String createTransactionTable = "CREATE TABLE " + TABLE_MONTHLY_TRANSACTION + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY, " +
                 COLUMN_TRANSACTION_DATE + " INTEGER, " +
                 COLUMN_ITEM_CATEGORY_TYPE + " INTEGER, " +
@@ -103,8 +103,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return list;
     }
-
-
 
     public List<Transaction> getAllTransactionsForDuration(Date startDate, Date endDate){
         SQLiteDatabase db = getReadableDatabase();

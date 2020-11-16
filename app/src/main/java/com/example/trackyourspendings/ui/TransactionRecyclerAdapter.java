@@ -3,12 +3,10 @@ package com.example.trackyourspendings.ui;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.trackyourspendings.R;
 import com.example.trackyourspendings.Transaction;
 
 import java.util.ArrayList;
@@ -20,35 +18,41 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
     @NonNull
     @Override
     public TransactionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.support_simple_spinner_dropdown_item,parent,false);
+        TransactionEntryView entryView= new TransactionEntryView(LayoutInflater.from(parent.getContext()),parent);
+        View view= entryView.getRootView();
 
-        return new TransactionViewHolder(view);
+        return new TransactionViewHolder(view,entryView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TransactionViewHolder viewHolder, int pos) {
         Transaction transaction= transactions.get(pos);
 
-        viewHolder.itemName.setText(transaction.getItem().getName());
+        TransactionEntryView entryView= viewHolder.getEntryView();
+        entryView.bindItem(transaction);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return transactions.size();
     }
 
     class TransactionViewHolder extends RecyclerView.ViewHolder{
-        TextView itemName;
+        TransactionEntryView entryView;
 
-        public TransactionViewHolder(@NonNull View transactionView) {
+        public TransactionViewHolder(@NonNull View transactionView, TransactionEntryView entryView) {
             super(transactionView);
 
-            itemName= transactionView.findViewById(R.id.packed);
+            this.entryView= entryView;
+        }
+
+        TransactionEntryView getEntryView() {
+            return entryView;
         }
     }
 
     public void bindItems(List<Transaction> transactions){
         this.transactions= transactions;
+        notifyDataSetChanged();
     }
 }
