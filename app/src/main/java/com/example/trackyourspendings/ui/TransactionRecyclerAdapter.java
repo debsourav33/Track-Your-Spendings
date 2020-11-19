@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.trackyourspendings.Transaction;
+import com.example.trackyourspendings.database.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;

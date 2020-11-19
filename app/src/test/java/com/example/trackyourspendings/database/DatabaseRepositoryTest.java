@@ -3,13 +3,6 @@ package com.example.trackyourspendings.database;
 import android.content.Context;
 import android.util.Log;
 
-import com.dd.plist.NSArray;
-import com.dd.plist.NSDictionary;
-import com.dd.plist.NSNumber;
-import com.dd.plist.NSObject;
-import com.dd.plist.PropertyListParser;
-import com.example.trackyourspendings.Item;
-import com.example.trackyourspendings.Transaction;
 import com.example.trackyourspendings.common.Constants;
 import com.example.trackyourspendings.managers.CategoryManager;
 
@@ -20,16 +13,10 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
-import org.xml.sax.SAXException;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import static org.junit.Assert.*;
 import static org.powermock.api.mockito.PowerMockito.mock;
@@ -75,7 +62,24 @@ public class DatabaseRepositoryTest {
 
         assertEquals(2, transactionList.size());
         for (Transaction transaction : transactionList) {
-            Log.i(TAG, "getAllTransactionsForDurationTest: " + transaction.toString());
+            Log.i(TAG, "getAllTransactionsForDurationTest: " + transaction.getId());
+        }
+    }
+
+    @Test
+    public void deleteTransaction(){
+        List<Transaction> transactionList = databaseRepository.getAllTransactions();
+
+        assertEquals(2, transactionList.size());
+        for (Transaction transaction : transactionList) {
+            Log.i(TAG, "getAllTransactionsForDurationTest: " + transaction.getId());
+        }
+
+        boolean res= databaseRepository.deleteTransaction(transactionList.get(0));
+        assertTrue(res);
+        //assertEquals(1, transactionList.size());
+        for (Transaction transaction : transactionList) {
+            Log.i(TAG, "getAllTransactionsForDurationTest: " + transaction.getId());
         }
     }
 

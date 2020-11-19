@@ -1,16 +1,16 @@
 package com.example.trackyourspendings.managers;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ManagerHost {
     private static ManagerHost managerHost;
-    public Activity currActivity;
+    public AppCompatActivity currActivity;
 
-    public Activity getCurrActivity() {
+    public AppCompatActivity getCurrActivity() {
         return currActivity;
     }
 
-    public void setCurrActivity(Activity currActivity) {
+    public void setCurrActivity(AppCompatActivity currActivity) {
         this.currActivity = currActivity;
     }
 

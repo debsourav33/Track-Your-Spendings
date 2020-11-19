@@ -9,19 +9,14 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.trackyourspendings.Item;
-import com.example.trackyourspendings.Transaction;
-import com.example.trackyourspendings.common.Constants;
 import com.example.trackyourspendings.managers.CategoryManager;
 import com.example.trackyourspendings.managers.ManagerHost;
+import com.example.trackyourspendings.utils.DateUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = DatabaseHelper.class.getSimpleName();
@@ -49,6 +44,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //"CREATE TABLE MONTHLY_TRANSACTION (ID INTEGER PRIMARY KEY, DATE STRING, BROAD_CATEGORY_TYPE STRING, CATEGORY_TYPE STRING, ITEM_TYPE INTEGER, ITEM_NAME STRING, QUANTITY STRING, COST REAL, DESCRIPTION STRING)"
+
+        String dropTransactionTable= "DROP TABLE IF EXISTS "+ TABLE_MONTHLY_TRANSACTION ;
+        db.execSQL(dropTransactionTable);
+
         String createTransactionTable = "CREATE TABLE " + TABLE_MONTHLY_TRANSACTION + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY, " +
                 COLUMN_TRANSACTION_DATE + " INTEGER, " +
@@ -58,7 +57,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_COST + " INTEGER, " +
                 COLUMN_DESCRIPTION + " TEXT, "+
                 COLUMN_LAST_MODIFY_DATE + " INTEGER)";
-
         db.execSQL(createTransactionTable);
     }
 
@@ -89,6 +87,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowId!=-1;
     }
 
+    public boolean deleteTransaction(Transaction transaction){
+        SQLiteDatabase db= getWritableDatabase();
+
+        int deletedRows= db.delete(TABLE_MONTHLY_TRANSACTION,COLUMN_ID+ "=" +transaction.getId(), null);
+
+        return deletedRows>0;
+    }
+
     private Cursor getAllTransactionCursor(){
         SQLiteDatabase db = getReadableDatabase();
         String selectAllQuery = "Select * from " + TABLE_MONTHLY_TRANSACTION;
@@ -107,10 +113,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Transaction> getAllTransactionsForDuration(Date startDate, Date endDate){
         SQLiteDatabase db = getReadableDatabase();
 
-        Calendar cal= Calendar.getInstance();
-        cal.setTime(startDate);
-        cal.add(Calendar.DATE,-1);  //between computes from startday+1 to endday
-        startDate= cal.getTime();
+        startDate= DateUtils.getDateStartTime(startDate);
+        endDate= DateUtils.getDateEndTime(endDate);
 
         String selectAllQuery = "SELECT *"+
                 " FROM " + TABLE_MONTHLY_TRANSACTION +

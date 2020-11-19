@@ -2,7 +2,6 @@ package com.example.trackyourspendings.database;
 
 import android.content.Context;
 
-import com.example.trackyourspendings.Transaction;
 import com.example.trackyourspendings.categories.CategoryType;
 
 import java.util.Date;
@@ -20,6 +19,11 @@ public class DatabaseRepository implements Repository {
     @Override
     public boolean insertTransaction(Transaction transaction) {
         return databaseHelper.insertTransaction(transaction);
+    }
+
+    @Override
+    public boolean deleteTransaction(Transaction transaction) {
+        return databaseHelper.deleteTransaction(transaction);
     }
 
     @Override

@@ -4,9 +4,9 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.trackyourspendings.Item;
+import com.example.trackyourspendings.database.Item;
 import com.example.trackyourspendings.R;
-import com.example.trackyourspendings.Transaction;
+import com.example.trackyourspendings.database.Transaction;
 import com.example.trackyourspendings.categories.CategoryType;
 
 import java.text.SimpleDateFormat;

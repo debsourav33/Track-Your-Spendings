@@ -3,8 +3,8 @@ package com.example.trackyourspendings.ui;
 import android.content.Context;
 import android.view.LayoutInflater;
 
-import com.example.trackyourspendings.Item;
-import com.example.trackyourspendings.Transaction;
+import com.example.trackyourspendings.database.Item;
+import com.example.trackyourspendings.database.Transaction;
 import com.example.trackyourspendings.common.Constants;
 import com.example.trackyourspendings.managers.CategoryManager;
 
@@ -13,16 +13,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.example.trackyourspendings.utils.DateUtils;
-
 import static com.example.trackyourspendings.utils.DateUtils.*;
-import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
 public class TransactionRecyclerListViewTest {
@@ -54,6 +50,6 @@ public class TransactionRecyclerListViewTest {
 
     @Test
     public void bindItem() {
-        transactionRecyclerView.bindItem(transactions);
+        transactionRecyclerView.bindItems(transactions);
     }
 }
