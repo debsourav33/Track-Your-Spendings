@@ -1,6 +1,6 @@
-package com.example.trackyourspendings.common;
+package com.example.trackyourspendings.categories;
 
-import com.example.trackyourspendings.categories.ProductType;
+import com.example.trackyourspendings.common.Constants;
 
 public class Cloth extends ProductType {
     public Cloth() {

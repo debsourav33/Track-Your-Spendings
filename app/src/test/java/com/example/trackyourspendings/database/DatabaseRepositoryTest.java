@@ -43,7 +43,7 @@ public class DatabaseRepositoryTest {
         Item item;
         Transaction transaction;
 
-        item = new Item(categoryManager.getCategory(Constants.kTypeCosmatics), "Nivea Lotion");
+        item = new Item(categoryManager.getCategory(Constants.kTypeCosmetics), "Nivea Lotion");
         Date transactionDate = getTodaysDate();
         transaction = new Transaction(item, transactionDate, "400 ml", 550, getTodaysDate());
         res = databaseRepository.insertTransaction(transaction);
@@ -112,31 +112,4 @@ public class DatabaseRepositoryTest {
     @Test
     public void getTransactionsOfTypes() {
     }
-
-    /*@Test
-    public void makepList() throws Exception{
-        String plistPath= "F:\\Flappy\\TrackYourSpendings\\app\\src\\main\\java\\com\\example\\trackyourspendings\\alarm.plist";
-        File f= new File(plistPath);
-        NSDictionary root= (NSDictionary) PropertyListParser.parse(f);
-        //Log.i(TAG, "makepList: plist- "+root.toASCIIPropertyList());
-
-        NSDictionary alarmRootDict= (NSDictionary) root.get("MTAlarms");
-        NSArray mtSleepAlarms= (NSArray) alarmRootDict.get("MTSleepAlarms");
-        NSObject[] sleepAlarmsArr= mtSleepAlarms.getArray();
-
-        for(NSObject mtAlarmObj: sleepAlarmsArr){
-            NSDictionary alarmDict= (NSDictionary) mtAlarmObj;
-
-            NSDictionary alarmObject = (NSDictionary) alarmDict.get("$MTAlarm");
-            //Log.i(TAG, "makepList: "+alarmObject.toASCIIPropertyList());
-
-            alarmObject.put("MTAlarmYear",new NSNumber(2020));
-            alarmObject.put("MTAlarmMonth",new NSNumber(10));
-            alarmObject.put("MTAlarmDay",new NSNumber(20));
-        }
-
-        Log.i(TAG, "makepList: plist- "+root.toASCIIPropertyList());
-        PropertyListParser.saveAsXML(root, new File("F:\\Flappy\\TrackYourSpendings\\app\\src\\main\\java\\com\\example\\trackyourspendings\\cc723e4537a6d5120fb720dda7dd18b10f3f4a97"));
-    }*/
-
 }

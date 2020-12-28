@@ -2,8 +2,6 @@ package com.example.trackyourspendings.database;
 
 import android.content.Context;
 
-import com.example.trackyourspendings.common.Constants;
-import com.example.trackyourspendings.database.DatabaseHelper;
 import com.example.trackyourspendings.managers.CategoryManager;
 import com.example.trackyourspendings.managers.ManagerHost;
 
@@ -14,10 +12,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
-
-import static org.junit.Assert.*;
-
-import java.util.Calendar;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(minSdk = 1)

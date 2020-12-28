@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">Track Your Spendings</string>
+    <string-array name="broad_categories">
+        <item>Product</item>
+        <item>Service</item>
+    </string-array>
+
+    <string-array name="product_categories">
+        <item>Food</item>
+        <item>Grocery</item>
+        <item>Cloth</item>
+        <item>Medicine</item>
+        <item>Cosmetics</item>
+        <item>Home Appliances</item>
+        <item>Electronics</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="payment_methods">
+        <item>Cash</item>
+        <item>Card</item>
+    </string-array>
+
+    <string-array name="service_categories">
+        <item>Medical</item>
+        <item>Transport</item>
+        <item>Saloon</item>
+        <item>Bills</item>
+        <item>Laundry</item>
+        <item>Charity</item>
+        <item>Other</item>
+    </string-array>
+
 </resources>

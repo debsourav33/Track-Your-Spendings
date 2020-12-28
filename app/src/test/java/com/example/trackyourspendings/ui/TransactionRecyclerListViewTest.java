@@ -37,7 +37,7 @@ public class TransactionRecyclerListViewTest {
         transactions= new ArrayList<>();
         Transaction transaction;
 
-        item = new Item(categoryManager.getCategory(Constants.kTypeCosmatics), "Nivea Lotion");
+        item = new Item(categoryManager.getCategory(Constants.kTypeCosmetics), "Nivea Lotion");
         Date transactionDate = getTodaysDate();
         transaction = new Transaction(item, transactionDate, "400 ml", 550, getTodaysDate());
         transactions.add(transaction);
