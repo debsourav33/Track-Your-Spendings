@@ -18,7 +18,7 @@ public class DailyInputAlertReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent= PendingIntent.getActivity(context,1,targetIntent,0);
 
         notificationHelper= new NotificationHelper(context);
-        notificationHelper.createReminderNotification("Have you input?",
+        notificationHelper.notifyDailyInputReminder("Have you input?",
                 "Input today's data if you haven't done already!",
                 pendingIntent);
     }

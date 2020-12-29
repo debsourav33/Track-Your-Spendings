@@ -16,15 +16,16 @@ public class NotificationHelper {
     private NotificationManagerCompat manager;
 
     public NotificationHelper(Context context) {
-        channelController= new NotificationChannelController(context);
-        creator= new NotificationCreator(context);
-        manager= NotificationManagerCompat.from(context);
+        channelController = new NotificationChannelController(context);
+        creator = new NotificationCreator(context);
+        manager = NotificationManagerCompat.from(context);
     }
 
-    public void createReminderNotification(String title, String msg, PendingIntent targetActivityIntent){
-        channelController.create(NOTIFICATION_DAILY_INPUT_CHANNEL_ID,"Daily Input",NotificationChannelController.Importance.DEFAULT);
-        Notification notification= creator.create(NOTIFICATION_DAILY_INPUT_CHANNEL_ID,title,msg, Notification.PRIORITY_DEFAULT, Notification.CATEGORY_REMINDER,targetActivityIntent);
+    public void notifyDailyInputReminder(String title, String msg, PendingIntent targetActivityIntent) {
+        channelController.create(NOTIFICATION_DAILY_INPUT_CHANNEL_ID, "Daily Input", NotificationChannelController.Importance.HIGH);
+        Notification notification = creator.create(NOTIFICATION_DAILY_INPUT_CHANNEL_ID, title, msg,
+                Notification.PRIORITY_HIGH, Notification.CATEGORY_REMINDER, targetActivityIntent);
 
-        manager.notify(1,notification);
+        manager.notify(1, notification);
     }
 }

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.example.trackyourspendings.common.SSUrlConnection;
 import com.example.trackyourspendings.database.Item;
 import com.example.trackyourspendings.database.Transaction;
 import com.example.trackyourspendings.common.Constants;
@@ -83,7 +82,6 @@ public class TransactionListActivity extends BaseActivity implements Transaction
 
     @Override
     public void onDateClicked(Date date) {
-        new SSUrlConnection().request();
         passItems(databaseRepository.getAllTransactionsForDuration(date,date));
     }
 }
