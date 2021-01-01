@@ -4,13 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.example.trackyourspendings.database.Item;
-import com.example.trackyourspendings.database.Transaction;
+import com.example.trackyourspendings.data.transaction.Item;
+import com.example.trackyourspendings.data.transaction.Transaction;
 import com.example.trackyourspendings.common.Constants;
-import com.example.trackyourspendings.database.DatabaseRepository;
-import com.example.trackyourspendings.managers.CategoryManager;
+import com.example.trackyourspendings.data.database.DatabaseRepository;
+import com.example.trackyourspendings.categories.common.CategoryManager;
+import com.example.trackyourspendings.data.transaction.payment.CardPayment;
+import com.example.trackyourspendings.data.transaction.payment.CashPayment;
+import com.example.trackyourspendings.ui.common.BaseActivity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +32,7 @@ public class TransactionListActivity extends BaseActivity implements Transaction
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        transactionRecyclerView= new TransactionRecyclerListView(LayoutInflater.from(this),null);
+        transactionRecyclerView= new TransactionRecyclerListView(LayoutInflater.from(this),null, getSupportFragmentManager());
         mView= transactionRecyclerView.getRootView();
         setContentView(mView);
 
@@ -36,19 +40,10 @@ public class TransactionListActivity extends BaseActivity implements Transaction
         prepareDummyItems();
 
         passItems(databaseRepository.getAllTransactions());
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
         transactionRecyclerView.register(this);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        transactionRecyclerView.unregister(this);
-    }
 
     private void passItems(List<Transaction> transactions) {
         transactionRecyclerView.bindItems(transactions);
@@ -60,24 +55,26 @@ public class TransactionListActivity extends BaseActivity implements Transaction
         Item item;
         Transaction transaction;
 
-        item = new Item(categoryManager.getCategory(Constants.kTypeCosmetics), "Nivea Lotion");
-        Date transactionDate = getEarlierDate(getTodaysDate(),6);
-        transaction = new Transaction(item, transactionDate, "400 ml", 550, transactionDate);
-        databaseRepository.insertTransaction(transaction);
+        transaction= new Transaction.Builder()
+                .item(categoryManager.getCategory(Constants.kTypeCosmetics), "Nivea Lotion")
+                .quantity("400 ml")
+                .payment(new CardPayment(),550)
+                .trasactionDate(getTodaysDate())
+                .lastModificationDate(Calendar.getInstance().getTime())
+                .build();
+       databaseRepository.insertTransaction(transaction);
 
-        item = new Item(categoryManager.getCategory(Constants.kTypeFood), "Onion");
-        transactionDate = getEarlierDate(getTodaysDate(), 3);
-        transaction = new Transaction(item, transactionDate, "1 kg", 90, transactionDate);
-        transactions.add(transaction);
-        databaseRepository.insertTransaction(transaction);
 
-        item = new Item(categoryManager.getCategory(Constants.kTypeFood), "Canned Tuna");
-        transactionDate = getEarlierDate(getTodaysDate(), 0);
-        transaction = new Transaction(item, transactionDate, "1 pc", 190, transactionDate);
-        transactions.add(transaction);
-        databaseRepository.insertTransaction(transaction);
+        transaction= new Transaction.Builder()
+                .item(categoryManager.getCategory(Constants.kTypeFood), "Onion")
+                .quantity("1 kg")
+                .description("Red Indian")
+                .payment(new CashPayment(),90)
+                .trasactionDate(getEarlierDate(getTodaysDate(),15))
+                .lastModificationDate(Calendar.getInstance().getTime())
+                .build();
 
-        getSupportFragmentManager();
+        databaseRepository.insertTransaction(transaction);
     }
 
     @Override

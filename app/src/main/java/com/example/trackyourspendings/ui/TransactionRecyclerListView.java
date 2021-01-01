@@ -8,15 +8,19 @@ import android.widget.Button;
 import android.widget.DatePicker;
 
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trackyourspendings.R;
-import com.example.trackyourspendings.database.DatePickerFragment;
-import com.example.trackyourspendings.database.Transaction;
+import com.example.trackyourspendings.ui.dialogs.DatePickerFragment;
+import com.example.trackyourspendings.data.transaction.Transaction;
 import com.example.trackyourspendings.managers.ManagerHost;
+import com.example.trackyourspendings.ui.common.BaseObservableView;
+import com.example.trackyourspendings.ui.dialogs.DialogManager;
 import com.example.trackyourspendings.utils.DateUtils;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -25,17 +29,28 @@ public class TransactionRecyclerListView extends BaseObservableView<TransactionR
         void onDateClicked(Date selectedDate);
     }
 
+    private FragmentManager fragmentManager;
     private RecyclerView recyclerView;
     private TransactionRecyclerAdapter recyclerAdapter;
     private Button btnPickDate;
+    private Button btnAdd;
 
     private DialogFragment datePickerDialog;
 
-    public TransactionRecyclerListView(LayoutInflater inflater, ViewGroup parent) {
+    private Date selectedDate;
+
+    public TransactionRecyclerListView(LayoutInflater inflater, ViewGroup parent, FragmentManager fragmentManager) {
         super(inflater.inflate(R.layout.transaction_list,parent,false));
+
+        this.fragmentManager= fragmentManager;
+
+        selectedDate= Calendar.getInstance().getTime();
 
         btnPickDate= findViewById(R.id.btnDate);
         btnPickDate.setOnClickListener(this);
+
+        btnAdd= findViewById(R.id.btnAdd);
+        btnAdd.setOnClickListener(this);
 
         recyclerAdapter= new TransactionRecyclerAdapter();
         recyclerView= findViewById(R.id.transactionRecylerView);
@@ -50,11 +65,9 @@ public class TransactionRecyclerListView extends BaseObservableView<TransactionR
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Date date= DateUtils.getDateStartTime(year,month,dayOfMonth);
+        selectedDate= DateUtils.getDateStartTime(year,month,dayOfMonth);
 
-        for(Listener listener: getListeners()) {
-            listener.onDateClicked(date);
-        }
+        if(listener!=null)  listener.onDateClicked(selectedDate);
     }
 
     @Override
@@ -62,7 +75,10 @@ public class TransactionRecyclerListView extends BaseObservableView<TransactionR
         switch (v.getId()){
             case R.id.btnDate:
                 datePickerDialog= new DatePickerFragment(this);
-                datePickerDialog.show(ManagerHost.getInstance().getCurrActivity().getSupportFragmentManager(),"Date Picked");
+                datePickerDialog.show(ManagerHost.getInstance().getCurrActivity().getSupportFragmentManager(),"Date Picking");
+                break;
+            case R.id.btnAdd:
+                new DialogManager(fragmentManager).showInputDialog(selectedDate,"Give Input");
                 break;
         }
     }

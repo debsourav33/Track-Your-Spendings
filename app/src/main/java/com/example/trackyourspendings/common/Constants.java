@@ -13,13 +13,16 @@ public class Constants {
     public static final int DAILY_NOTIFICATION_FIRE_HOUR= 11;
     public static final long DAILY_NOTIFICATION_FIRE_INTERVAL= 24 * 60 * 60 * 1000;  //1 day
 
+    public static final int ID_CASH_PAYMENT = 0;
+    public static final int ID_CARD_PAYMENT = 1;
+
     public static final int kTypeFood = 101;
     public static final int kTypeGrocery = 102;
     public static final int kTypeCloth = 103;
     public static final int kTypeMedicine = 104;
     public static final int kTypeCosmetics = 105;
     public static final int kTypeHomeAppliances = 106;
-    public static final int kTypeElectronics = 106;
+    public static final int kTypeElectronics = 107;
 
     public static final int kTypeOtherProducts = 199;
 
@@ -31,6 +34,7 @@ public class Constants {
     public static final int kTypeCharity = 206;
 
     public static final int kTypeOtherServices = 299;
+
 
     public static long getDailyNotificationFireTimeInMillis(){
         Calendar cal= Calendar.getInstance();

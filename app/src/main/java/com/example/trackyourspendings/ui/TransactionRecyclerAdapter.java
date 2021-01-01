@@ -1,13 +1,12 @@
 package com.example.trackyourspendings.ui;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.trackyourspendings.database.Transaction;
+import com.example.trackyourspendings.data.transaction.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +18,8 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
     @Override
     public TransactionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         TransactionEntryView entryView= new TransactionEntryView(LayoutInflater.from(parent.getContext()),parent);
-        View view= entryView.getRootView();
 
-        return new TransactionViewHolder(view,entryView);
+        return new TransactionViewHolder(entryView);
     }
 
     @Override
@@ -40,8 +38,8 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
     class TransactionViewHolder extends RecyclerView.ViewHolder{
         TransactionEntryView entryView;
 
-        public TransactionViewHolder(@NonNull View transactionView, TransactionEntryView entryView) {
-            super(transactionView);
+        public TransactionViewHolder(TransactionEntryView entryView) {
+            super(entryView.getRootView());
 
             this.entryView= entryView;
         }

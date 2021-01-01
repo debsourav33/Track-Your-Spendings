@@ -10,10 +10,10 @@
         <item>Grocery</item>
         <item>Cloth</item>
         <item>Medicine</item>
-        <item>Cosmetics</item>
+        <item>Cosmatics</item>
         <item>Home Appliances</item>
         <item>Electronics</item>
-        <item>Other</item>
+        <item>Other Products</item>
     </string-array>
 
     <string-array name="payment_methods">

@@ -2,6 +2,8 @@ package com.example.trackyourspendings.managers;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.trackyourspendings.categories.common.CategoryManager;
+
 public class ManagerHost {
     private static ManagerHost managerHost;
     public AppCompatActivity currActivity;
