@@ -1,14 +1,11 @@
 package com.example.trackyourspendings.categories.products;
 
 import com.example.trackyourspendings.categories.common.CategoryType;
+import com.example.trackyourspendings.common.Constants;
 
 public abstract class ProductType extends CategoryType {
     
-    public ProductType(int id, String name, int iconResourceId) {
-        super("Product",id,name, iconResourceId);
-    }
-
-    public ProductType(int id, String name) {
-        super("Product",id,name);
+    protected ProductType(int id, String name, int iconResourceId) {
+        super(Constants.TYPE_PRODUCT,"Product", id,name, iconResourceId);
     }
 }

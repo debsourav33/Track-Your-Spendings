@@ -4,6 +4,6 @@ import com.example.trackyourspendings.common.Constants;
 
 public class Cloth extends ProductType {
     public Cloth() {
-        super(Constants.kTypeCloth, "Cloth");
+        super(Constants.kTypeCloth, "Cloth",0);
     }
 }

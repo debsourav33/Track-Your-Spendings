@@ -4,19 +4,18 @@ import com.example.trackyourspendings.R;
 
 public abstract class CategoryType {
     private String broadCategoryName;
+    private int broadCategoryId;
     private int id;
     private String name;
     private int iconResourceId;
 
-    public CategoryType(String broadCategoryName, int id, String name, int iconResourceId) {
+
+    public CategoryType(int broadCategoryId, String broadCategoryName, int id, String name, int iconResourceId) {
+        this.broadCategoryId = broadCategoryId;
         this.broadCategoryName= broadCategoryName;
         this.id= id;
         this.name = name;
         this.iconResourceId = iconResourceId;
-    }
-
-    public CategoryType(String broadCategoryName, int id, String name) {
-        this(broadCategoryName,id,name,R.drawable.ic_launcher_background);
     }
 
     public String getName() {
@@ -33,5 +32,9 @@ public abstract class CategoryType {
 
     public int getId() {
         return id;
+    }
+
+    public int getBroadCategoryId() {
+        return broadCategoryId;
     }
 }

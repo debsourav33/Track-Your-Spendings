@@ -6,6 +6,6 @@ import com.example.trackyourspendings.common.Constants;
 public class Food extends ProductType {
 
     public Food() {
-        super(Constants.kTypeFood,"Food", R.drawable.ic_launcher_background);
+        super(Constants.kTypeFood,"Food", 0);
     }
 }

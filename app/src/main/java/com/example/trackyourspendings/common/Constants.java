@@ -16,6 +16,7 @@ public class Constants {
     public static final int ID_CASH_PAYMENT = 0;
     public static final int ID_CARD_PAYMENT = 1;
 
+    public static final int TYPE_PRODUCT= 100;
     public static final int kTypeFood = 101;
     public static final int kTypeGrocery = 102;
     public static final int kTypeCloth = 103;
@@ -26,6 +27,7 @@ public class Constants {
 
     public static final int kTypeOtherProducts = 199;
 
+    public static final int TYPE_SERVICE= 200;
     public static final int kTypeMedical = 201;
     public static final int kTypeTransport = 202;
     public static final int kTypeSaloon = 203;

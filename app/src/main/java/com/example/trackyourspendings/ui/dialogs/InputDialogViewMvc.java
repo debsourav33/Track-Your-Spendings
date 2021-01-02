@@ -3,11 +3,13 @@ package com.example.trackyourspendings.ui.dialogs;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import com.example.trackyourspendings.R;
 import com.example.trackyourspendings.categories.common.CategoryManager;
@@ -15,6 +17,8 @@ import com.example.trackyourspendings.categories.common.CategoryType;
 import com.example.trackyourspendings.ui.common.BaseObservableView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class InputDialogViewMvc extends BaseObservableView<InputDialogViewMvc.Listener> {
@@ -36,9 +40,15 @@ public class InputDialogViewMvc extends BaseObservableView<InputDialogViewMvc.Li
     private ArrayAdapter<String> broadSpinnerAdapter;
     private ArrayAdapter<String> spinnerAdapter;
 
-    public InputDialogViewMvc(LayoutInflater inflater, ViewGroup parent)
+    private HashMap<String, List<String>> spinCategoryMap;
+    String defaultSpinBroadCategory;
+
+    public InputDialogViewMvc(LayoutInflater inflater, ViewGroup parent, HashMap<String, List<String>> spinCategoryMap, String defaultSpinBroadCategory)
     {
         super(inflater.inflate(R.layout.input_transaction,parent,false));
+
+        this.spinCategoryMap= spinCategoryMap;
+        this.defaultSpinBroadCategory= defaultSpinBroadCategory;
 
         initViews();
     }
@@ -68,30 +78,40 @@ public class InputDialogViewMvc extends BaseObservableView<InputDialogViewMvc.Li
     }
 
     private void setSpinnerItems() {
-        ArrayList<String> broadCategoryNames= new ArrayList<>();
-        ArrayList<String> categoryNames= new ArrayList<>();
+        ArrayList<String> broadCategoryNames= new ArrayList<>(spinCategoryMap.keySet());
 
-        Map<Integer,CategoryType> categoryTypeMap= CategoryManager.getInstance().getCategoryTypeMap();
-        for(CategoryType type: categoryTypeMap.values()){
-            categoryNames.add(type.getName());
+        broadSpinnerAdapter= new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                new ArrayList<>(broadCategoryNames));
 
-            if(!broadCategoryNames.contains(type.getBroadCategoryName()))
-                broadCategoryNames.add(type.getBroadCategoryName());
-        }
+        broadSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinBroadCategory.setAdapter(broadSpinnerAdapter);
+        //spinBroadCategory.setSelection(broadCategoryNames.indexOf(defaultSpinBroadCategory));
 
         spinnerAdapter= new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item,
-                categoryNames);
+                new ArrayList<>(spinCategoryMap.get(defaultSpinBroadCategory)));
 
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinCategory.setAdapter(spinnerAdapter);
 
-        broadSpinnerAdapter= new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                categoryNames);
-
-        broadSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinBroadCategory.setAdapter(broadSpinnerAdapter);
+        spinBroadCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedBroadCategory= (String) parent.getItemAtPosition(position);
+                List<String> correspondingCategories= spinCategoryMap.get(selectedBroadCategory);
+                spinnerAdapter.clear();
+                spinnerAdapter.addAll(new ArrayList<>(correspondingCategories));
+                spinnerAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                List<String> correspondingCategories= spinCategoryMap.get(defaultSpinBroadCategory);
+                spinnerAdapter.clear();
+                spinnerAdapter.addAll(new ArrayList<>(correspondingCategories));
+                spinnerAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private InputInfo getInputInfo() {

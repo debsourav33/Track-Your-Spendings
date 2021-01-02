@@ -169,7 +169,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             lastModifiedDate = new Date(lastModifyDateMillis);
 
             Item item = new Item(categoryManager.getCategory(itemCategoryType), itemName);
-            return new Transaction(id, item, transacntionDate, quantity, cost, description, lastModifiedDate, paymentMethod);
+            Transaction transaction= new Transaction.Builder(id)
+                    .item(categoryManager.getCategory(itemCategoryType),itemName)
+                    .payment(paymentMethod,cost)
+                    .quantity(quantity)
+                    .description(description)
+                    .trasactionDate(transacntionDate)
+                    .lastModificationDate(lastModifiedDate)
+                    .build();
+
+            return transaction;
         }
         catch (Exception e){
             Log.e(TAG, "cursorToTransaction: " + e.getMessage());

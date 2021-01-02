@@ -6,6 +6,6 @@ import com.example.trackyourspendings.common.Constants;
 public class Cosmatics extends ProductType{
 
     public Cosmatics() {
-        super(Constants.kTypeCosmetics, "Cosmatics", R.drawable.ic_launcher_background);
+        super(Constants.kTypeCosmetics, "Cosmatics", 0);
     }
 }

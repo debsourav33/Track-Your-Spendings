@@ -5,6 +5,6 @@ import com.example.trackyourspendings.common.Constants;
 public class Transport extends ServiceType {
 
     public Transport() {
-        super(Constants.kTypeTransport, "Transport");
+        super(Constants.kTypeTransport, "Transport",0);
     }
 }

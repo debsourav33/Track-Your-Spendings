@@ -17,17 +17,6 @@ public class Transaction {
     private int cost;
     private PaymentMethod paymentMethod;
 
-    public Transaction(@Nullable Integer id, Item item, Date trasactionDate, String quantity, int cost, String description, Date lastModificationDate, PaymentMethod paymentMethod) {
-        this.id= id;
-        this.item = item;
-        this.trasactionDate = trasactionDate;
-        this.lastModificationDate = lastModificationDate;
-        this.quantity = quantity;
-        this.cost = cost;
-        this.description = description;
-        this.paymentMethod = paymentMethod;
-    }
-
     private Transaction(){
 
     }
