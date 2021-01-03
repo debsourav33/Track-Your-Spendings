@@ -38,7 +38,7 @@ public class TransactionListActivity extends BaseActivity implements Transaction
         setContentView(mView);
 
         databaseRepository= new DatabaseRepository(this);
-         prepareDummyItems();
+        prepareDummyItems();
 
         passItemsToView(databaseRepository.getAllTransactions());
 
@@ -86,5 +86,7 @@ public class TransactionListActivity extends BaseActivity implements Transaction
     public void onItemSwiped(Transaction transaction) {
         Toast.makeText(this,"Swipped and about to delete transaction with ID: "+transaction.getId(),Toast.LENGTH_SHORT).show();
         databaseRepository.deleteTransaction(transaction);
+
+        passItemsToView(databaseRepository.getAllTransactions());
     }
 }

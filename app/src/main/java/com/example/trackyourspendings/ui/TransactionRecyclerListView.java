@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trackyourspendings.R;
-import com.example.trackyourspendings.data.database.Repository;
 import com.example.trackyourspendings.ui.dialogs.DatePickerFragment;
 import com.example.trackyourspendings.data.transaction.Transaction;
 import com.example.trackyourspendings.managers.ManagerHost;
@@ -36,7 +35,7 @@ public class TransactionRecyclerListView extends BaseObservableView<TransactionR
 
     private FragmentManager fragmentManager;
     private RecyclerView recyclerView;
-    private TransactionRecyclerAdapter recyclerAdapter;
+    private TransactionRecyclerListAdapter recyclerAdapter;
     private Button btnPickDate;
     private FloatingActionButton btnAdd;
 
@@ -56,7 +55,7 @@ public class TransactionRecyclerListView extends BaseObservableView<TransactionR
         btnAdd= findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(this);
 
-        recyclerAdapter= new TransactionRecyclerAdapter();
+        recyclerAdapter= new TransactionRecyclerListAdapter();
         recyclerView= findViewById(R.id.transactionRecylerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);

@@ -47,7 +47,7 @@ public class TransactionEntryView extends BaseView {
         imgPayment.setImageResource(transaction.getPaymentMethod().getIconResourceId());
 
         SimpleDateFormat dateFormat= new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-        String date= dateFormat.format(transaction.getTrasactionDate());
+        String date= dateFormat.format(transaction.getTransactionDate());
         txtDate.setText(date);
     }
 

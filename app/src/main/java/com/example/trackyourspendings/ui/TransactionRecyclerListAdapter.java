@@ -4,15 +4,30 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trackyourspendings.data.transaction.Transaction;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionRecyclerAdapter extends RecyclerView.Adapter<TransactionRecyclerAdapter.TransactionViewHolder> {
-    List <Transaction> transactions= new ArrayList<>();
+public class TransactionRecyclerListAdapter extends ListAdapter<Transaction, TransactionRecyclerListAdapter.TransactionViewHolder> {
+    private static final DiffUtil.ItemCallback<Transaction> DIFF_CALLBACK = new DiffUtil.ItemCallback<Transaction>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Transaction oldItem, @NonNull Transaction newItem) {
+            return oldItem.getId() == newItem.getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Transaction oldItem, @NonNull Transaction newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
+
+    protected TransactionRecyclerListAdapter() {
+        super(DIFF_CALLBACK);
+    }
 
     @NonNull
     @Override
@@ -24,15 +39,18 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
 
     @Override
     public void onBindViewHolder(@NonNull TransactionViewHolder viewHolder, int pos) {
-        Transaction transaction= transactions.get(pos);
+        Transaction transaction= getItem(pos);  //get item from superclass
 
         TransactionEntryView entryView= viewHolder.getEntryView();
         entryView.bindItem(transaction);
     }
 
-    @Override
-    public int getItemCount() {
-        return transactions.size();
+    public void bindItems(List<Transaction> transactions) {
+        submitList(transactions);  //calls submitList() of superclass
+    }
+
+    public Transaction getItemAt(int adapterPosition) {
+        return getItem(adapterPosition);
     }
 
     class TransactionViewHolder extends RecyclerView.ViewHolder{
@@ -47,14 +65,5 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
         TransactionEntryView getEntryView() {
             return entryView;
         }
-    }
-
-    public void bindItems(List<Transaction> transactions){
-        this.transactions= transactions;
-        notifyDataSetChanged();
-    }
-
-    public Transaction getItemAt(int position){
-        return transactions.get(position);
     }
 }

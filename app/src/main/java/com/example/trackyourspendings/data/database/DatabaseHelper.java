@@ -77,7 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values= new ContentValues();
 
-        Date transDate= transaction.getTrasactionDate();
+        Date transDate= transaction.getTransactionDate();
         Date lastModifyDate= transaction.getLastModificationDate();
         values.put(COLUMN_TRANSACTION_DATE,transDate.getTime());
         values.put(COLUMN_LAST_MODIFY_DATE,lastModifyDate.getTime());

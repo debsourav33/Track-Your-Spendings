@@ -2,6 +2,8 @@ package com.example.trackyourspendings.data.database;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.trackyourspendings.categories.common.CategoryType;
 import com.example.trackyourspendings.data.transaction.Transaction;
 
@@ -36,6 +38,10 @@ public class DatabaseRepository implements Repository {
     public List<Transaction> getAllTransactionsForDuration(Date startDate, Date endDate) {
         return databaseHelper.getAllTransactionsForDuration(startDate,endDate);
     }
+
+    /*public LiveData<List<Transaction>> getLiveAllTransactionsForDuration(Date startDate, Date endDate) {
+        return databaseHelper.getAllTransactionsForDuration(startDate,endDate);
+    }*/
 
     @Override
     public List<Transaction> getTransactionsOfTypes(List<CategoryType> types) {

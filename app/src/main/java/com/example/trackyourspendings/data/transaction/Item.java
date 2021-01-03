@@ -1,5 +1,7 @@
 package com.example.trackyourspendings.data.transaction;
 
+import androidx.annotation.Nullable;
+
 import com.example.trackyourspendings.categories.common.CategoryType;
 
 public class Item {
@@ -31,4 +33,13 @@ public class Item {
         return categoryType.getBroadCategoryName();
     }
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(!(obj instanceof Item))  return false;
+
+        Item comp= (Item) obj;
+
+        return name.equals(comp.getName()) &&
+                getCategoryName().equals(comp.getCategoryName());
+    }
 }

@@ -10,7 +10,7 @@ import java.util.Date;
 public class Transaction {
     private Integer id;
     private Item item;
-    private Date trasactionDate;
+    private Date transactionDate;
     private Date lastModificationDate;
     private String quantity;
     private String description;
@@ -84,7 +84,7 @@ public class Transaction {
             transaction.description= description;
             transaction.cost= cost;
             transaction.paymentMethod= paymentMethod;
-            transaction.trasactionDate= trasactionDate;
+            transaction.transactionDate = trasactionDate;
             transaction.lastModificationDate= lastModificationDate;
 
             return transaction;
@@ -95,8 +95,8 @@ public class Transaction {
         return item;
     }
 
-    public Date getTrasactionDate() {
-        return trasactionDate;
+    public Date getTransactionDate() {
+        return transactionDate;
     }
 
     public String getQuantity() {
@@ -125,5 +125,19 @@ public class Transaction {
 
     private void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(!(obj instanceof Transaction))  return false;
+
+        Transaction comp= (Transaction) obj;
+
+        return cost==comp.cost &&
+                quantity.equals(comp.quantity) &&
+                description.equals(comp.description) &&
+                paymentMethod.equals(comp.getPaymentMethod()) &&
+                transactionDate.equals(comp.getTransactionDate()) &&
+                item.equals(comp.getItem());
     }
 }
