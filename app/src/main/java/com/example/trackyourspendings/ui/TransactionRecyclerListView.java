@@ -7,18 +7,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trackyourspendings.R;
+import com.example.trackyourspendings.data.database.Repository;
 import com.example.trackyourspendings.ui.dialogs.DatePickerFragment;
 import com.example.trackyourspendings.data.transaction.Transaction;
 import com.example.trackyourspendings.managers.ManagerHost;
 import com.example.trackyourspendings.ui.common.BaseObservableView;
 import com.example.trackyourspendings.ui.dialogs.DialogManager;
 import com.example.trackyourspendings.utils.DateUtils;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -27,16 +31,16 @@ import java.util.List;
 public class TransactionRecyclerListView extends BaseObservableView<TransactionRecyclerListView.Listener> implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
     public interface Listener {
         void onDateClicked(Date selectedDate);
+        void onItemSwiped(Transaction transaction);
     }
 
     private FragmentManager fragmentManager;
     private RecyclerView recyclerView;
     private TransactionRecyclerAdapter recyclerAdapter;
     private Button btnPickDate;
-    private Button btnAdd;
+    private FloatingActionButton btnAdd;
 
     private DialogFragment datePickerDialog;
-
     private Date selectedDate;
 
     public TransactionRecyclerListView(LayoutInflater inflater, ViewGroup parent, FragmentManager fragmentManager) {
@@ -57,6 +61,25 @@ public class TransactionRecyclerListView extends BaseObservableView<TransactionR
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(recyclerAdapter);
+
+        setupItemTouchHelper();
+    }
+
+    private void setupItemTouchHelper() {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Transaction transaction= recyclerAdapter.getItemAt(viewHolder.getAdapterPosition());
+
+                if(listener!=null)  listener.onItemSwiped(transaction);
+            }
+        }).attachToRecyclerView(recyclerView);
     }
 
     public void bindItems(List<Transaction> transactions){

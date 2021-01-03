@@ -43,6 +43,7 @@
             android:id="@+id/itemName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccent"
             tools:text="Nivea Lotion"
             android:textSize="30dp"
             android:textStyle="bold"

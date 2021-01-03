@@ -22,7 +22,7 @@ public class Transaction {
     }
 
     public static class Builder{
-        private Integer id;
+        private Integer id= -1;
         private Item item;
         private Date trasactionDate;
         private Date lastModificationDate;
@@ -78,6 +78,7 @@ public class Transaction {
         public Transaction build(){
             Transaction transaction= new Transaction();
 
+            transaction.id= id;
             transaction.item= item;
             transaction.quantity= quantity;
             transaction.description= description;

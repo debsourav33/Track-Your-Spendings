@@ -53,4 +53,8 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
         this.transactions= transactions;
         notifyDataSetChanged();
     }
+
+    public Transaction getItemAt(int position){
+        return transactions.get(position);
+    }
 }

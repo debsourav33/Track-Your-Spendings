@@ -3,6 +3,7 @@ package com.example.trackyourspendings.ui;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.trackyourspendings.data.transaction.Item;
 import com.example.trackyourspendings.data.transaction.Transaction;
@@ -37,15 +38,15 @@ public class TransactionListActivity extends BaseActivity implements Transaction
         setContentView(mView);
 
         databaseRepository= new DatabaseRepository(this);
-        prepareDummyItems();
+         prepareDummyItems();
 
-        passItems(databaseRepository.getAllTransactions());
+        passItemsToView(databaseRepository.getAllTransactions());
 
         transactionRecyclerView.register(this);
     }
 
 
-    private void passItems(List<Transaction> transactions) {
+    private void passItemsToView(List<Transaction> transactions) {
         transactionRecyclerView.bindItems(transactions);
     }
 
@@ -62,8 +63,7 @@ public class TransactionListActivity extends BaseActivity implements Transaction
                 .trasactionDate(getTodaysDate())
                 .lastModificationDate(Calendar.getInstance().getTime())
                 .build();
-       databaseRepository.insertTransaction(transaction);
-
+        databaseRepository.insertTransaction(transaction);
 
         transaction= new Transaction.Builder()
                 .item(categoryManager.getCategory(Constants.kTypeFood), "Onion")
@@ -79,6 +79,12 @@ public class TransactionListActivity extends BaseActivity implements Transaction
 
     @Override
     public void onDateClicked(Date date) {
-        passItems(databaseRepository.getAllTransactionsForDuration(date,date));
+        passItemsToView(databaseRepository.getAllTransactionsForDuration(date,date));
+    }
+
+    @Override
+    public void onItemSwiped(Transaction transaction) {
+        Toast.makeText(this,"Swipped and about to delete transaction with ID: "+transaction.getId(),Toast.LENGTH_SHORT).show();
+        databaseRepository.deleteTransaction(transaction);
     }
 }
