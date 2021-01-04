@@ -13,6 +13,7 @@ import com.example.trackyourspendings.categories.common.CategoryManager;
 import com.example.trackyourspendings.data.transaction.payment.CardPayment;
 import com.example.trackyourspendings.data.transaction.payment.CashPayment;
 import com.example.trackyourspendings.ui.common.BaseActivity;
+import com.example.trackyourspendings.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,9 +39,9 @@ public class TransactionListActivity extends BaseActivity implements Transaction
         setContentView(mView);
 
         databaseRepository= new DatabaseRepository(this);
-        prepareDummyItems();
+        //prepareDummyItems();
 
-        passItemsToView(databaseRepository.getAllTransactions());
+        passItemsToView(databaseRepository.getAllTransactionsForDuration(DateUtils.getTodaysDate(),DateUtils.getTodaysDate()));
 
         transactionRecyclerView.register(this);
     }

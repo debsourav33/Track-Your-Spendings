@@ -10,7 +10,7 @@ public class Constants {
     public static final String DATE_PATTERN= "yyyy-MM-dd";
 
     public static final String NOTIFICATION_DAILY_INPUT_CHANNEL_ID = "daily";
-    public static final int DAILY_NOTIFICATION_FIRE_HOUR= 11;
+    public static final int DAILY_NOTIFICATION_FIRE_HOUR= 0;
     public static final long DAILY_NOTIFICATION_FIRE_INTERVAL= 24 * 60 * 60 * 1000;  //1 day
 
     public static final int ID_CASH_PAYMENT = 0;
